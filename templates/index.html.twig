@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="ml-2 mt-2 lg:flex-shrink-0">
+        <div class="inline-flex rounded-md shadow">
+            <a href="{{ path('app_account_create') }}"
+               class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700">
+                Create a new account
+            </a>
+        </div>
+    </div>
+{% endblock %}

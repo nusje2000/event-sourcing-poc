@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+{% import 'shared/buttons.html.twig' as button %}
+
+{% block body %}
+    <div class="ml-2 mt-2">
+        <div class="rounded-md">
+            <a href="{{ path('app_home') }}"
+               class="items-center px-2 py-1 border border-transparent text-base font-medium rounded-md text-white bg-gray-400 hover:bg-gray-500">
+                Home
+            </a>
+        </div>
+
+        <h2 class="text-xl mt-4">Account information</h2>
+        <p>Account number: {{ account.accountNumber|default('unassigned') }}</p>
+        <p>Balance: {{ account.currency.inEuros }} euro</p>
+
+        <h2 class="text-lg mt-4">Deposit</h2>
+        <span class="ml-1">
+            {{ button.primary_link_small(path('app_account_deposit', {id: account.id.toString, amount: 100}), '+1 euro') }}
+        </span>
+        <span class="ml-1">
+            {{ button.primary_link_small(path('app_account_deposit', {id: account.id.toString, amount: 1000}), '+10 euro') }}
+        </span>
+        <span class="ml-1">
+            {{ button.primary_link_small(path('app_account_deposit', {id: account.id.toString, amount: 10000}), '+100 euro') }}
+        </span>
+
+        <h2 class="text-lg mt-4">Withdraw</h2>
+        <span class="ml-1">
+            {{ button.primary_link_small(path('app_account_withdraw', {id: account.id.toString, amount: 100}), '-1 euro') }}
+        </span>
+        <span class="ml-1">
+            {{ button.primary_link_small(path('app_account_withdraw', {id: account.id.toString, amount: 1000}), '-10 euro') }}
+        </span>
+        <span class="ml-1">
+            {{ button.primary_link_small(path('app_account_withdraw', {id: account.id.toString, amount: 10000}), '-100 euro') }}
+        </span>
+    </div>
+{% endblock %}
