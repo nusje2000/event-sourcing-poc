@@ -8,7 +8,10 @@ use EventSauce\EventSourcing\Serialization\SerializablePayload;
 
 final class AccountNumberWasAssigned implements SerializablePayload
 {
-    private string $accountNumber;
+    /**
+     * @var string
+     */
+    private $accountNumber;
 
     public function __construct(string $accountNumber)
     {

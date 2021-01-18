@@ -21,9 +21,15 @@ use function Safe\sprintf;
 
 final class FileSystemRepository implements MessageRepository
 {
-    private MessageSerializer $messageSerializer;
+    /**
+     * @var MessageSerializer
+     */
+    private $messageSerializer;
 
-    private string $rootDirectory;
+    /**
+     * @var string
+     */
+    private $rootDirectory;
 
     public function __construct(MessageSerializer $messageSerializer, string $aggregateName, string $rootDirectory)
     {
@@ -74,14 +80,9 @@ final class FileSystemRepository implements MessageRepository
 
     private function verifyAggregateRootDirectoryExists(?AggregateRootId $id): void
     {
-        $path = $this->rootDirectory();
-        if (!is_dir($path)) {
-            mkdir($path);
-        }
-
         $path = $this->aggregateRootDirectory($id);
         if (!is_dir($path)) {
-            mkdir($path);
+            mkdir($path, 0777, true);
         }
     }
 

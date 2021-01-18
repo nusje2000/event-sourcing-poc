@@ -9,7 +9,10 @@ use EventSauce\EventSourcing\Serialization\SerializablePayload;
 
 final class CurrencyWasDeposited implements SerializablePayload
 {
-    private Currency $amount;
+    /**
+     * @var Currency
+     */
+    private $amount;
 
     public function __construct(Currency $amount)
     {

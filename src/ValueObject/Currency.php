@@ -43,6 +43,11 @@ final class Currency extends AbstractInt
         return self::createFromCents($this->inCents() - $currency->inCents());
     }
 
+    public function multiply(float $amount): self
+    {
+        return self::createFromCents((int) ($this->inCents() * $amount));
+    }
+
     public static function getConstraints(): array
     {
         return [];

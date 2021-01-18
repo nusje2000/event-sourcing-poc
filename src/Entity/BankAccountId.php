@@ -24,6 +24,9 @@ final class BankAccountId implements AggregateRootId
         return $this->id;
     }
 
+    /**
+     * @return BankAccountId
+     */
     public static function fromString(string $aggregateRootId): AggregateRootId
     {
         return new self($aggregateRootId);

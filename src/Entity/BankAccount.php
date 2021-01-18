@@ -11,17 +11,22 @@ use App\Event\BankAccount\CurrencyWasWithdawn;
 use App\ValueObject\Currency;
 use EventSauce\EventSourcing\AggregateRoot;
 use EventSauce\EventSourcing\AggregateRootBehaviour;
-use EventSauce\EventSourcing\AggregateRootId;
 
 final class BankAccount implements AggregateRoot
 {
     use AggregateRootBehaviour;
 
-    private ?string $accountNumber = null;
+    /**
+     * @var string|null
+     */
+    private $accountNumber;
 
-    private Currency $currency;
+    /**
+     * @var Currency
+     */
+    private $currency;
 
-    private function __construct(AggregateRootId $aggregateRootId)
+    private function __construct(BankAccountId $aggregateRootId)
     {
         $this->aggregateRootId = $aggregateRootId;
         $this->currency = Currency::createFromCents(0);
@@ -43,7 +48,7 @@ final class BankAccount implements AggregateRoot
         return $account;
     }
 
-    public function id(): AggregateRootId
+    public function id(): BankAccountId
     {
         return $this->aggregateRootId;
     }

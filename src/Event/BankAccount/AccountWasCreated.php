@@ -10,7 +10,10 @@ use EventSauce\EventSourcing\Serialization\SerializablePayload;
 
 final class AccountWasCreated implements SerializablePayload
 {
-    private AggregateRootId $accountId;
+    /**
+     * @var AggregateRootId
+     */
+    private $accountId;
 
     public function __construct(AggregateRootId $accountId)
     {

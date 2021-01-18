@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Entity\BankAccount;
 use App\Entity\BankAccountId;
+use App\Repository\TransactionRepository;
 use App\ValueObject\Currency;
 use EventSauce\EventSourcing\AggregateRootRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,11 +15,20 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class AccountController extends AbstractController
 {
-    private AggregateRootRepository $repository;
+    /**
+     * @var AggregateRootRepository
+     */
+    private $repository;
 
-    public function __construct(AggregateRootRepository $repository)
+    /**
+     * @var TransactionRepository
+     */
+    private $transactionRepository;
+
+    public function __construct(AggregateRootRepository $repository, TransactionRepository $transactionRepository)
     {
         $this->repository = $repository;
+        $this->transactionRepository = $transactionRepository;
     }
 
     /**
@@ -48,6 +58,7 @@ final class AccountController extends AbstractController
 
         return $this->render('overview.html.twig', [
             'account' => $account,
+            'transactions' => $this->transactionRepository->byAccount($account->id()),
         ]);
     }
 

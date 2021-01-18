@@ -20,6 +20,8 @@ services:
 
     app.bank_account.dispatcher:
         class: EventSauce\EventSourcing\SynchronousMessageDispatcher
+        arguments:
+            - '@App\Consumer\BankAccount\TransactionProjectionConsumer'
 
     app.bank_account.filesystem_repository:
         class: App\Repository\FileSystemRepository
@@ -34,6 +36,11 @@ services:
             - App\Entity\BankAccount
             - '@app.bank_account.filesystem_repository'
             - '@app.bank_account.dispatcher'
+
+    App\Repository\TransactionRepository:
+        class: App\Repository\FileTransactionRepository
+        arguments:
+            - '%kernel.project_dir%/var/storage/transaction'
 
     App\Controller\AccountController:
         arguments:

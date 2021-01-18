@@ -2,7 +2,7 @@
 {% import 'shared/buttons.html.twig' as button %}
 
 {% block body %}
-    <div class="ml-2 mt-2">
+    <div class="ml-2 my-2">
         <div class="rounded-md">
             <a href="{{ path('app_home') }}"
                class="items-center px-2 py-1 border border-transparent text-base font-medium rounded-md text-white bg-gray-400 hover:bg-gray-500">
@@ -35,5 +35,39 @@
         <span class="ml-1">
             {{ button.primary_link_small(path('app_account_withdraw', {id: account.id.toString, amount: 10000}), '-100 euro') }}
         </span>
+
+        <h2 class="text-lg mt-4">Transactions</h2>
+        <table class="table-fixed border-collapse border border-blue-800 font-mono">
+            <thead>
+                <tr>
+                    <th class="w-1/3 px-1 border border-blue-800 text-white bg-blue-800">Id</th>
+                    <th class="w-1/3 px-1 border border-blue-800 text-white bg-blue-800">Amount</th>
+                    <th class="w-1/3 px-1 border border-blue-800 text-white bg-blue-800">Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for transaction in transactions %}
+                    <tr>
+                        <td class="p-1 border border-blue-800">{{ transaction.id }}</td>
+                        {% if transaction.amount.inEuros < 0 %}
+                            <td class="p-1 border border-blue-800 bg-red-100 text-red-900 font-bold">
+                                - {{ transaction.amount.inEuros|abs }} euro
+                            </td>
+                        {% elseif transaction.amount.inEuros > 0 %}
+                            <td class="p-1 border border-blue-800 bg-green-100 text-green-900 font-bold">
+                                + {{ transaction.amount.inEuros }} euro
+                            </td>
+                        {% else %}
+                            <td class="p-1 border border-blue-800">{{ transaction.amount.inEuros }} euro</td>
+                        {% endif %}
+                        <td class="p-1 border border-blue-800">{{ transaction.timestamp|date('Y-m-d H:i:s') }}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="3" class="p-1">No transactions found</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 {% endblock %}
