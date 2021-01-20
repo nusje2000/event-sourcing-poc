@@ -1,0 +1,8 @@
+services:
+    App\Console\ManageAccountCommand:
+        arguments:
+            - '@app.bank_account.repository'
+            - '@App\Repository\TransactionRepository'
+            - '@tactician.commandbus'
+        tags:
+            - { name: console.command }

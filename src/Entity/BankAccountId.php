@@ -4,24 +4,21 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use Aeviiq\ValueObject\AbstractString;
 use EventSauce\EventSourcing\AggregateRootId;
 use Ramsey\Uuid\Uuid;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
-final class BankAccountId implements AggregateRootId
+final class BankAccountId extends AbstractString implements AggregateRootId
 {
-    /**
-     * @var string
-     */
-    private $id;
-
     private function __construct(string $id)
     {
-        $this->id = $id;
+        parent::__construct($id);
     }
 
     public function toString(): string
     {
-        return $this->id;
+        return $this->get();
     }
 
     /**
@@ -35,5 +32,12 @@ final class BankAccountId implements AggregateRootId
     public static function generate(): BankAccountId
     {
         return new self(Uuid::uuid4()->toString());
+    }
+
+    public static function getConstraints(): array
+    {
+        return [
+            new NotBlank(),
+        ];
     }
 }

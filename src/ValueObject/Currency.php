@@ -33,6 +33,16 @@ final class Currency extends AbstractInt
         return $this->value;
     }
 
+    public function isPositive(): bool
+    {
+        return $this->get() >= 0;
+    }
+
+    public function isNegative(): bool
+    {
+        return $this->get() < 0;
+    }
+
     public function add(Currency $currency): self
     {
         return self::createFromCents($this->inCents() + $currency->inCents());

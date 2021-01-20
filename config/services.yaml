@@ -22,6 +22,7 @@ services:
         class: EventSauce\EventSourcing\SynchronousMessageDispatcher
         arguments:
             - '@App\Consumer\BankAccount\TransactionProjectionConsumer'
+            - '@App\Consumer\BankAccount\AccountNumberAssignmentConsumer'
 
     app.bank_account.filesystem_repository:
         class: App\Repository\FileSystemRepository
@@ -36,6 +37,9 @@ services:
             - App\Entity\BankAccount
             - '@app.bank_account.filesystem_repository'
             - '@app.bank_account.dispatcher'
+
+    app.bank_account.account_number_distributor:
+        class: App\Service\RandomAccountNumberDistributor
 
     App\Repository\TransactionRepository:
         class: App\Repository\FileTransactionRepository

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
+use App\Exception\AggregateRootNotFound;
 use EventSauce\EventSourcing\AggregateRootId;
 use EventSauce\EventSourcing\Header;
 use EventSauce\EventSourcing\Message;
@@ -99,7 +100,7 @@ final class FileSystemRepository implements MessageRepository
             return $this->rootDirectory() . '/unknown_root';
         }
 
-        return $this->rootDirectory() . '/' . $id->toString();
+        return $this->rootDirectory() . '/root_' . $id->toString();
     }
 
     private function rootDirectory(): string
@@ -109,6 +110,10 @@ final class FileSystemRepository implements MessageRepository
 
     private function findFilesByAggregateRootId(AggregateRootId $id): Finder
     {
+        if (!is_dir($this->aggregateRootDirectory($id))) {
+            throw AggregateRootNotFound::byId($id);
+        }
+
         return Finder::create()->in($this->aggregateRootDirectory($id))->name('*.json');
     }
 }

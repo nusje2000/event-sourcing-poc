@@ -8,6 +8,7 @@ use App\Event\BankAccount\AccountNumberWasAssigned;
 use App\Event\BankAccount\AccountWasCreated;
 use App\Event\BankAccount\CurrencyWasDeposited;
 use App\Event\BankAccount\CurrencyWasWithdawn;
+use App\ValueObject\AccountNumber;
 use App\ValueObject\Currency;
 use EventSauce\EventSourcing\AggregateRoot;
 use EventSauce\EventSourcing\AggregateRootBehaviour;
@@ -17,7 +18,7 @@ final class BankAccount implements AggregateRoot
     use AggregateRootBehaviour;
 
     /**
-     * @var string|null
+     * @var AccountNumber|null
      */
     private $accountNumber;
 
@@ -40,20 +41,12 @@ final class BankAccount implements AggregateRoot
         return $account;
     }
 
-    public static function initiateWithPredefinedAccountNumber(BankAccountId $accountId, string $accountNumber): self
-    {
-        $account = self::initiate($accountId);
-        $account->recordThat(new AccountNumberWasAssigned($accountNumber));
-
-        return $account;
-    }
-
     public function id(): BankAccountId
     {
         return $this->aggregateRootId;
     }
 
-    public function accountNumber(): ?string
+    public function accountNumber(): ?AccountNumber
     {
         return $this->accountNumber;
     }
@@ -63,7 +56,7 @@ final class BankAccount implements AggregateRoot
         return $this->currency;
     }
 
-    public function assignAccountNumber(string $number): void
+    public function assignAccountNumber(AccountNumber $number): void
     {
         $this->recordThat(new AccountNumberWasAssigned($number));
     }

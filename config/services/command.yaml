@@ -1,0 +1,29 @@
+services:
+    app.command_handler.bank_account.create:
+        class: App\Command\BankAccount\CreateHandler
+        arguments:
+            - '@app.bank_account.repository'
+        tags:
+            - { name: tactician.handler, typehints: true }
+
+    app.command_handler.bank_account.assign_account_number:
+        class: App\Command\BankAccount\AssignAccountNumberHandler
+        arguments:
+            - '@app.bank_account.repository'
+            - '@app.bank_account.account_number_distributor'
+        tags:
+            - { name: tactician.handler, typehints: true }
+
+    app.command_handler.bank_account.deposit:
+        class: App\Command\BankAccount\DepositHandler
+        arguments:
+            - '@app.bank_account.repository'
+        tags:
+            - { name: tactician.handler, typehints: true }
+
+    app.command_handler.bank_account.withdraw:
+        class: App\Command\BankAccount\WithdrawHandler
+        arguments:
+            - '@app.bank_account.repository'
+        tags:
+            - { name: tactician.handler, typehints: true }

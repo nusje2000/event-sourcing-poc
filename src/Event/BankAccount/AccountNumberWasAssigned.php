@@ -4,21 +4,22 @@ declare(strict_types=1);
 
 namespace App\Event\BankAccount;
 
+use App\ValueObject\AccountNumber;
 use EventSauce\EventSourcing\Serialization\SerializablePayload;
 
 final class AccountNumberWasAssigned implements SerializablePayload
 {
     /**
-     * @var string
+     * @var AccountNumber
      */
     private $accountNumber;
 
-    public function __construct(string $accountNumber)
+    public function __construct(AccountNumber $accountNumber)
     {
         $this->accountNumber = $accountNumber;
     }
 
-    public function accountNumber(): string
+    public function accountNumber(): AccountNumber
     {
         return $this->accountNumber;
     }
@@ -29,7 +30,7 @@ final class AccountNumberWasAssigned implements SerializablePayload
     public function toPayload(): array
     {
         return [
-            'account_number' => $this->accountNumber,
+            'account_number' => $this->accountNumber->get(),
         ];
     }
 
@@ -38,6 +39,6 @@ final class AccountNumberWasAssigned implements SerializablePayload
      */
     public static function fromPayload(array $payload): SerializablePayload
     {
-        return new self($payload['account_number']);
+        return new self(AccountNumber::fromString($payload['account_number']));
     }
 }

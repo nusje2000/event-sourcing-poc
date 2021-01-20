@@ -4,11 +4,15 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Command\BankAccount\Create;
+use App\Command\BankAccount\Deposit;
+use App\Command\BankAccount\Withdraw;
 use App\Entity\BankAccount;
 use App\Entity\BankAccountId;
 use App\Repository\TransactionRepository;
 use App\ValueObject\Currency;
 use EventSauce\EventSourcing\AggregateRootRepository;
+use League\Tactician\CommandBus;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -25,10 +29,16 @@ final class AccountController extends AbstractController
      */
     private $transactionRepository;
 
-    public function __construct(AggregateRootRepository $repository, TransactionRepository $transactionRepository)
+    /**
+     * @var CommandBus
+     */
+    private $commandBus;
+
+    public function __construct(AggregateRootRepository $repository, TransactionRepository $transactionRepository, CommandBus $commandBus)
     {
         $this->repository = $repository;
         $this->transactionRepository = $transactionRepository;
+        $this->commandBus = $commandBus;
     }
 
     /**
@@ -36,15 +46,11 @@ final class AccountController extends AbstractController
      */
     public function create(): Response
     {
-        $account = BankAccount::initiateWithPredefinedAccountNumber(
-            BankAccountId::generate(),
-            sprintf('SA00AUSE%010d', random_int(0, 10 ** 10))
-        );
-
-        $this->repository->persist($account);
+        $id = BankAccountId::generate();
+        $this->commandBus->handle(Create::createWithId($id));
 
         return $this->redirectToRoute('app_account_view', [
-            'id' => $account->id()->toString(),
+            'id' => $id->toString(),
         ]);
     }
 
@@ -53,12 +59,14 @@ final class AccountController extends AbstractController
      */
     public function view(string $id): Response
     {
+        $accountId = BankAccountId::fromString($id);
+
         /** @var BankAccount $account */
-        $account = $this->repository->retrieve(BankAccountId::fromString($id));
+        $account = $this->repository->retrieve($accountId);
 
         return $this->render('overview.html.twig', [
             'account' => $account,
-            'transactions' => $this->transactionRepository->byAccount($account->id()),
+            'transactions' => $this->transactionRepository->byAccount($accountId),
         ]);
     }
 
@@ -67,10 +75,12 @@ final class AccountController extends AbstractController
      */
     public function deposit(string $id, int $amount): Response
     {
-        /** @var BankAccount $account */
-        $account = $this->repository->retrieve(BankAccountId::fromString($id));
-        $account->deposit(Currency::createFromCents($amount));
-        $this->repository->persist($account);
+        $this->commandBus->handle(
+            new Deposit(
+                BankAccountId::fromString($id),
+                Currency::createFromCents($amount)
+            )
+        );
 
         return $this->redirectToRoute('app_account_view', [
             'id' => $id,
@@ -82,10 +92,12 @@ final class AccountController extends AbstractController
      */
     public function withdraw(string $id, int $amount): Response
     {
-        /** @var BankAccount $account */
-        $account = $this->repository->retrieve(BankAccountId::fromString($id));
-        $account->withdraw(Currency::createFromCents($amount));
-        $this->repository->persist($account);
+        $this->commandBus->handle(
+            new Withdraw(
+                BankAccountId::fromString($id),
+                Currency::createFromCents($amount)
+            )
+        );
 
         return $this->redirectToRoute('app_account_view', [
             'id' => $id,
