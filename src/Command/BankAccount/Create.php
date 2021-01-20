@@ -23,7 +23,7 @@ final class Create
         return new self(BankAccountId::generate());
     }
 
-    public static function createWithId(BankAccountId $id): self
+    public static function withId(BankAccountId $id): self
     {
         return new self($id);
     }

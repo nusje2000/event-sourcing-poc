@@ -47,7 +47,7 @@ final class AccountController extends AbstractController
     public function create(): Response
     {
         $id = BankAccountId::generate();
-        $this->commandBus->handle(Create::createWithId($id));
+        $this->commandBus->handle(Create::withId($id));
 
         return $this->redirectToRoute('app_account_view', [
             'id' => $id->toString(),
