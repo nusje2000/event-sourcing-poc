@@ -6,52 +6,67 @@ namespace App\Entity;
 
 use App\ValueObject\Currency;
 use DateTimeInterface;
+use Doctrine\ORM\Mapping as ORM;
 use JsonSerializable;
+use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
+/**
+ * @ORM\Entity()
+ * @ORM\Table(name="account_transactions")
+ */
 final class Transaction implements JsonSerializable
 {
     /**
-     * @var UuidInterface
+     * @var string
+     *
+     * @ORM\Id()
+     * @ORM\Column(type="string")
      */
     private $id;
 
     /**
-     * @var BankAccountId
+     * @var string
+     *
+     * @ORM\Column(type="string")
      */
     private $accountId;
 
     /**
-     * @var Currency
+     * @var int
+     *
+     * @ORM\Column(type="integer")
      */
     private $amount;
 
     /**
      * @var DateTimeInterface
+     *
+     * @ORM\Column(type="datetime_immutable")
      */
     private $timestamp;
 
     public function __construct(UuidInterface $id, BankAccountId $accountId, Currency $amount, DateTimeInterface $timestamp)
     {
-        $this->id = $id;
-        $this->accountId = $accountId;
-        $this->amount = $amount;
+        $this->id = $id->toString();
+        $this->accountId = $accountId->toString();
+        $this->amount = $amount->inCents();
         $this->timestamp = $timestamp;
     }
 
     public function id(): UuidInterface
     {
-        return $this->id;
+        return Uuid::fromString($this->id);
     }
 
     public function accountId(): BankAccountId
     {
-        return $this->accountId;
+        return BankAccountId::fromString($this->accountId);
     }
 
     public function amount(): Currency
     {
-        return $this->amount;
+        return Currency::createFromCents($this->amount);
     }
 
     public function timestamp(): DateTimeInterface

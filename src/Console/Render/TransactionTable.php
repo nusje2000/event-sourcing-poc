@@ -30,6 +30,9 @@ final class TransactionTable
         $this->transactions = $transactions;
     }
 
+    /**
+     * @param array<Transaction> $transactions
+     */
     public static function createFromTransactions(OutputInterface $output, array $transactions): self
     {
         return new self($output, $transactions);
@@ -47,6 +50,9 @@ final class TransactionTable
         $table->render();
     }
 
+    /**
+     * @return array<string>
+     */
     private function headers(): array
     {
         return ['Transaction ID', 'Amount', 'Date'];

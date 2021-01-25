@@ -13,6 +13,9 @@ use App\ValueObject\Currency;
 use EventSauce\EventSourcing\AggregateRoot;
 use EventSauce\EventSourcing\AggregateRootBehaviour;
 
+/**
+ * @method BankAccountId aggregateRootId()
+ */
 final class BankAccount implements AggregateRoot
 {
     use AggregateRootBehaviour;

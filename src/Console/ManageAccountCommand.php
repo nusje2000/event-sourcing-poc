@@ -28,7 +28,7 @@ final class ManageAccountCommand extends Command
     protected static $defaultName = 'app:bank_account:manage';
 
     /**
-     * @var AggregateRootRepository
+     * @var AggregateRootRepository<BankAccount>
      */
     private $rootRepository;
 
@@ -47,6 +47,9 @@ final class ManageAccountCommand extends Command
      */
     private $io;
 
+    /**
+     * @param AggregateRootRepository<BankAccount> $rootRepository
+     */
     public function __construct(AggregateRootRepository $rootRepository, TransactionRepository $transactionRepository, CommandBus $commandBus)
     {
         parent::__construct();
@@ -58,7 +61,9 @@ final class ManageAccountCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $id = BankAccountId::fromString((string) $input->getArgument('id'));
+        /** @var string $providedId */
+        $providedId = $input->getArgument('id');
+        $id = BankAccountId::fromString($providedId);
         $this->io = new SymfonyStyle($input, $output);
 
         $formatter = $this->io->getFormatter();
@@ -113,6 +118,7 @@ final class ManageAccountCommand extends Command
 
     private function askForNextAction(BankAccountId $accountId): ?object
     {
+        /** @var string $choice */
         $choice = $this->io()->askQuestion(new ChoiceQuestion('What would you like to do?', ['deposit', 'withdraw', 'quit']));
 
         $this->clearDisplay();
@@ -150,7 +156,7 @@ final class ManageAccountCommand extends Command
         $value = (float) $this->io()->ask($question);
         $confirmationQuestion = str_replace('{amount}', sprintf('%.2f', $value), $confirmationQuestion);
 
-        if (!$this->io->confirm($confirmationQuestion)) {
+        if (!$this->io()->confirm($confirmationQuestion)) {
             $this->clearDisplay();
 
             return $this->askForCurrencyAmount($question, $confirmationQuestion);

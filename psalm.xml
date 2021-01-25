@@ -5,7 +5,8 @@
         <directory name="src"/>
 
         <ignoreFiles>
+            <file name="src/Kernel.php"/>
             <directory name="vendor"/>
         </ignoreFiles>
     </projectFiles>
-</psalm>
+<plugins><pluginClass class="Psalm\SymfonyPsalmPlugin\Plugin"/></plugins></psalm>

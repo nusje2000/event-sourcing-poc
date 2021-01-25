@@ -7,11 +7,10 @@ namespace App\Controller;
 use App\Command\BankAccount\Create;
 use App\Command\BankAccount\Deposit;
 use App\Command\BankAccount\Withdraw;
-use App\Entity\BankAccount;
 use App\Entity\BankAccountId;
+use App\Repository\AccountInformationRepository;
 use App\Repository\TransactionRepository;
 use App\ValueObject\Currency;
-use EventSauce\EventSourcing\AggregateRootRepository;
 use League\Tactician\CommandBus;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,9 +19,9 @@ use Symfony\Component\Routing\Annotation\Route;
 final class AccountController extends AbstractController
 {
     /**
-     * @var AggregateRootRepository
+     * @var AccountInformationRepository
      */
-    private $repository;
+    private $informationRepository;
 
     /**
      * @var TransactionRepository
@@ -34,9 +33,12 @@ final class AccountController extends AbstractController
      */
     private $commandBus;
 
-    public function __construct(AggregateRootRepository $repository, TransactionRepository $transactionRepository, CommandBus $commandBus)
-    {
-        $this->repository = $repository;
+    public function __construct(
+        AccountInformationRepository $informationRepository,
+        TransactionRepository $transactionRepository,
+        CommandBus $commandBus
+    ) {
+        $this->informationRepository = $informationRepository;
         $this->transactionRepository = $transactionRepository;
         $this->commandBus = $commandBus;
     }
@@ -61,11 +63,9 @@ final class AccountController extends AbstractController
     {
         $accountId = BankAccountId::fromString($id);
 
-        /** @var BankAccount $account */
-        $account = $this->repository->retrieve($accountId);
-
         return $this->render('overview.html.twig', [
-            'account' => $account,
+            'id' => $accountId,
+            'account' => $this->informationRepository->byAccount($accountId),
             'transactions' => $this->transactionRepository->byAccount($accountId),
         ]);
     }

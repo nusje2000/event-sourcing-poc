@@ -13,11 +13,11 @@ use EventSauce\EventSourcing\Serialization\MessageSerializer;
 use Generator;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo;
 
 use function Safe\json_decode;
 use function Safe\json_encode;
 use function Safe\mkdir;
-use function Safe\preg_replace;
 use function Safe\sprintf;
 
 final class FileSystemRepository implements MessageRepository
@@ -35,7 +35,7 @@ final class FileSystemRepository implements MessageRepository
     public function __construct(MessageSerializer $messageSerializer, string $aggregateName, string $rootDirectory)
     {
         $this->messageSerializer = $messageSerializer;
-        $this->rootDirectory = $rootDirectory . '/' . preg_replace('/[^a-z0-9]+/i', '_', $aggregateName);
+        $this->rootDirectory = $rootDirectory . '/' . $aggregateName;
     }
 
     public function persist(Message ...$messages): void
@@ -53,30 +53,48 @@ final class FileSystemRepository implements MessageRepository
     {
         $files = $this->findFilesByAggregateRootId($id);
 
+        $version = 0;
+
+        /** @var SplFileInfo $file */
         foreach ($files as $file) {
-            foreach ($this->messageSerializer->unserializePayload(json_decode($file->getContents(), true)) as $message) {
+            /** @var array<mixed> $decoded */
+            $decoded = json_decode($file->getContents(), true);
+
+            /** @var Message $message */
+            foreach ($this->messageSerializer->unserializePayload($decoded) as $message) {
+                $version = $message->aggregateVersion();
+
                 yield $message;
             }
         }
 
-        return isset($message) ? $message->aggregateVersion() : 0;
+        return $version;
     }
 
     public function retrieveAllAfterVersion(AggregateRootId $id, int $aggregateRootVersion): Generator
     {
         $files = $this->findFilesByAggregateRootId($id);
 
+        $version = 0;
+
+        /** @var SplFileInfo $file */
         foreach ($files as $file) {
-            foreach ($this->messageSerializer->unserializePayload(json_decode($file->getContents(), true)) as $message) {
+            /** @var array<mixed> $decoded */
+            $decoded = json_decode($file->getContents(), true);
+
+            /** @var Message $message */
+            foreach ($this->messageSerializer->unserializePayload($decoded) as $message) {
                 if ($message->aggregateVersion() <= $aggregateRootVersion) {
                     continue;
                 }
+
+                $version = $message->aggregateVersion();
 
                 yield $message;
             }
         }
 
-        return isset($message) ? $message->aggregateVersion() : 0;
+        return $version;
     }
 
     private function verifyAggregateRootDirectoryExists(?AggregateRootId $id): void
@@ -89,6 +107,7 @@ final class FileSystemRepository implements MessageRepository
 
     private function messageFile(Message $message): string
     {
+        /** @var string $eventId */
         $eventId = $message->header(Header::EVENT_ID) ?? Uuid::uuid4()->toString();
 
         return sprintf('%s/v%05d_%s.json', $this->aggregateRootDirectory($message->aggregateRootId()), $message->aggregateVersion(), $eventId);

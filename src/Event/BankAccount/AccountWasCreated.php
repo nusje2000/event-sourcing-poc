@@ -5,22 +5,21 @@ declare(strict_types=1);
 namespace App\Event\BankAccount;
 
 use App\Entity\BankAccountId;
-use EventSauce\EventSourcing\AggregateRootId;
 use EventSauce\EventSourcing\Serialization\SerializablePayload;
 
 final class AccountWasCreated implements SerializablePayload
 {
     /**
-     * @var AggregateRootId
+     * @var BankAccountId
      */
     private $accountId;
 
-    public function __construct(AggregateRootId $accountId)
+    public function __construct(BankAccountId $accountId)
     {
         $this->accountId = $accountId;
     }
 
-    public function id(): AggregateRootId
+    public function id(): BankAccountId
     {
         return $this->accountId;
     }

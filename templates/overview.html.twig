@@ -12,28 +12,28 @@
 
         <h2 class="text-xl mt-4">Account information</h2>
         <p>Account number: {{ account.accountNumber|default('unassigned') }}</p>
-        <p>Balance: {{ account.currency.inEuros }} euro</p>
+        <p>Balance: {{ account.balance.inEuros }} euro</p>
 
         <h2 class="text-lg mt-4">Deposit</h2>
         <span class="ml-1">
-            {{ button.primary_link_small(path('app_account_deposit', {id: account.id.toString, amount: 100}), '+1 euro') }}
+            {{ button.primary_link_small(path('app_account_deposit', {id: id.toString, amount: 100}), '+1 euro') }}
         </span>
         <span class="ml-1">
-            {{ button.primary_link_small(path('app_account_deposit', {id: account.id.toString, amount: 1000}), '+10 euro') }}
+            {{ button.primary_link_small(path('app_account_deposit', {id: id.toString, amount: 1000}), '+10 euro') }}
         </span>
         <span class="ml-1">
-            {{ button.primary_link_small(path('app_account_deposit', {id: account.id.toString, amount: 10000}), '+100 euro') }}
+            {{ button.primary_link_small(path('app_account_deposit', {id: id.toString, amount: 10000}), '+100 euro') }}
         </span>
 
         <h2 class="text-lg mt-4">Withdraw</h2>
         <span class="ml-1">
-            {{ button.primary_link_small(path('app_account_withdraw', {id: account.id.toString, amount: 100}), '-1 euro') }}
+            {{ button.primary_link_small(path('app_account_withdraw', {id: id.toString, amount: 100}), '-1 euro') }}
         </span>
         <span class="ml-1">
-            {{ button.primary_link_small(path('app_account_withdraw', {id: account.id.toString, amount: 1000}), '-10 euro') }}
+            {{ button.primary_link_small(path('app_account_withdraw', {id: id.toString, amount: 1000}), '-10 euro') }}
         </span>
         <span class="ml-1">
-            {{ button.primary_link_small(path('app_account_withdraw', {id: account.id.toString, amount: 10000}), '-100 euro') }}
+            {{ button.primary_link_small(path('app_account_withdraw', {id: id.toString, amount: 10000}), '-100 euro') }}
         </span>
 
         <h2 class="text-lg mt-4">Transactions</h2>

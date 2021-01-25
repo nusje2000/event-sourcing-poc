@@ -23,6 +23,7 @@ services:
         arguments:
             - '@App\Consumer\BankAccount\TransactionProjectionConsumer'
             - '@App\Consumer\BankAccount\AccountNumberAssignmentConsumer'
+            - '@App\Consumer\BankAccount\AccountInformationProjectionConsumer'
 
     app.bank_account.filesystem_repository:
         class: App\Repository\FileSystemRepository
@@ -42,10 +43,11 @@ services:
         class: App\Service\RandomAccountNumberDistributor
 
     App\Repository\TransactionRepository:
-        class: App\Repository\FileTransactionRepository
+        class: App\Repository\DoctrineTransactionRepository
         arguments:
-            - '%kernel.project_dir%/var/storage/transaction'
+            - '@doctrine.orm.entity_manager'
 
-    App\Controller\AccountController:
+    App\Repository\AccountInformationRepository:
+        class: App\Repository\DoctrineAccountInformationRepository
         arguments:
-            - '@app.bank_account.repository'
+            - '@doctrine.orm.entity_manager'

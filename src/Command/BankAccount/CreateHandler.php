@@ -10,10 +10,13 @@ use EventSauce\EventSourcing\AggregateRootRepository;
 final class CreateHandler
 {
     /**
-     * @var AggregateRootRepository
+     * @var AggregateRootRepository<BankAccount>
      */
     private $repository;
 
+    /**
+     * @param AggregateRootRepository<BankAccount> $repository
+     */
     public function __construct(AggregateRootRepository $repository)
     {
         $this->repository = $repository;
