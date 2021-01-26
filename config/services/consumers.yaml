@@ -1,0 +1,6 @@
+services:
+    App\Consumer\TransactionSocketConsumer:
+        arguments:
+            - '@http_client'
+            - '@logger'
+            - '%env(resolve:APP_TRANSACTIONS_SOCKET)%'

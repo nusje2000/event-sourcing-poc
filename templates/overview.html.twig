@@ -46,45 +46,11 @@
                     <th class="w-1/4 px-1 border border-blue-800 text-white bg-blue-800">Date</th>
                 </tr>
             </thead>
-            <tbody>
-                {% for transaction in transactions %}
-                    <tr>
-                        <td class="p-1 border border-blue-800">{{ transaction.id }}</td>
-                        {% if transaction.amount.inEuros < 0 %}
-                            <td class="p-1 border border-blue-800 bg-red-100 text-red-900 font-bold {{ not transaction.successfull ? 'line-through' }}">
-                                - {{ transaction.amount.inEuros|abs }} euro
-                            </td>
-                        {% elseif transaction.amount.inEuros > 0 %}
-                            <td class="p-1 border border-blue-800 bg-green-100 text-green-900 font-bold {{ not transaction.successfull ? 'line-through' }}">
-                                + {{ transaction.amount.inEuros }} euro
-                            </td>
-                        {% else %}
-                            <td class="p-1 border border-blue-800">{{ transaction.amount.inEuros }} euro</td>
-                        {% endif %}
-                        {% if transaction.successfull %}
-                            <td class="p-1 border border-blue-800 bg-green-100 text-green-900 font-bold">Accepted</td>
-                        {% else %}
-                            <td class="p-1 border border-blue-800 bg-red-100 text-red-900 font-bold">Declined</td>
-                        {% endif %}
-                        <td class="p-1 border border-blue-800">{{ transaction.timestamp|date('Y-m-d H:i:s') }}</td>
-                    </tr>
-                {% else %}
-                    <tr>
-                        <td colspan="3" class="p-1">No transactions found</td>
-                    </tr>
-                {% endfor %}
+            <tbody class="js-transactions" data-account-id="{{ id.toString }}" data-socket-url="{{ transaction_socket_host }}">
+                <tr>
+                    <td colspan="4" class="p-1 js-information-row">Loading transactions...</td>
+                </tr>
             </tbody>
         </table>
     </div>
-{% endblock %}
-
-{% block javascripts %}
-    {{ parent() }}
-    <script>
-        const socket = io('http://localhost:3000/');
-
-        socket.on('connect', () => {
-            console.log('Connected to socket');
-        });
-    </script>
 {% endblock %}

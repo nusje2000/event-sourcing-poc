@@ -24,6 +24,7 @@ services:
             - '@App\Consumer\TransactionProjectionConsumer'
             - '@App\Consumer\AccountNumberAssignmentConsumer'
             - '@App\Consumer\AccountInformationProjectionConsumer'
+            - '@App\Consumer\TransactionSocketConsumer'
 
     app.bank_account.filesystem_repository:
         class: App\Component\EventSource\FileSystemRepository

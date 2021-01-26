@@ -97,7 +97,8 @@ final class Transaction implements JsonSerializable
             'id' => $this->id()->toString(),
             'account_id' => $this->accountId()->toString(),
             'amount' => $this->amount()->inCents(),
-            'timestamp' => $this->timestamp()->format(DateTimeInterface::ATOM),
+            'success' => $this->successfull(),
+            'timestamp' => $this->timestamp()->format('Y-m-d H:i:s'),
         ];
     }
 }
