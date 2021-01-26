@@ -5,14 +5,11 @@ declare(strict_types=1);
 namespace App\Consumer;
 
 use App\Entity\AccountInformation;
-use App\Entity\BankAccount;
-use App\ValueObject\BankAccountId;
 use App\Event\AccountNumberWasAssigned;
-use App\Event\CurrencyWasDeposited;
-use App\Event\CurrencyWasWithdawn;
+use App\Event\CurrencyWasChanged;
 use App\Repository\AccountInformationRepository;
+use App\ValueObject\BankAccountId;
 use App\ValueObject\Currency;
-use EventSauce\EventSourcing\AggregateRootRepository;
 use EventSauce\EventSourcing\Consumer;
 use EventSauce\EventSourcing\Message;
 
@@ -23,9 +20,6 @@ final class AccountInformationProjectionConsumer implements Consumer
      */
     private $informationRepository;
 
-    /**
-     * @param AggregateRootRepository<BankAccount> $accountRepository
-     */
     public function __construct(AccountInformationRepository $informationRepository)
     {
         $this->informationRepository = $informationRepository;
@@ -45,15 +39,9 @@ final class AccountInformationProjectionConsumer implements Consumer
             $this->informationRepository->save($information);
         }
 
-        if ($event instanceof CurrencyWasDeposited) {
+        if ($event instanceof CurrencyWasChanged) {
             $information = $this->informationRepository->byAccount($id);
             $information->setBalance($information->balance()->add($event->amount()));
-            $this->informationRepository->save($information);
-        }
-
-        if ($event instanceof CurrencyWasWithdawn) {
-            $information = $this->informationRepository->byAccount($id);
-            $information->setBalance($information->balance()->subtract($event->amount()));
             $this->informationRepository->save($information);
         }
     }

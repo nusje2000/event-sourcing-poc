@@ -7,9 +7,10 @@ namespace App\Controller;
 use App\Command\Create;
 use App\Command\Deposit;
 use App\Command\Withdraw;
-use App\ValueObject\BankAccountId;
+use App\Exception\CurrencyChangeWasBlocked;
 use App\Repository\AccountInformationRepository;
 use App\Repository\TransactionRepository;
+use App\ValueObject\BankAccountId;
 use App\ValueObject\Currency;
 use League\Tactician\CommandBus;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -92,12 +93,16 @@ final class AccountController extends AbstractController
      */
     public function withdraw(string $id, int $amount): Response
     {
-        $this->commandBus->handle(
-            new Withdraw(
-                BankAccountId::fromString($id),
-                Currency::createFromCents($amount)
-            )
-        );
+        try {
+            $this->commandBus->handle(
+                new Withdraw(
+                    BankAccountId::fromString($id),
+                    Currency::createFromCents($amount)
+                )
+            );
+        } catch (CurrencyChangeWasBlocked $exception) {
+            $this->addFlash('error', $exception->getMessage());
+        }
 
         return $this->redirectToRoute('app_account_view', [
             'id' => $id,

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Command;
 
 use App\Entity\BankAccount;
+use App\Exception\CurrencyChangeWasBlocked;
 use EventSauce\EventSourcing\AggregateRootRepository;
 
 final class WithdrawHandler
@@ -26,7 +27,11 @@ final class WithdrawHandler
     {
         /** @var BankAccount $account */
         $account = $this->repository->retrieve($withdraw->id());
-        $account->withdraw($withdraw->amount());
+        $success = $account->withdraw($withdraw->amount());
         $this->repository->persist($account);
+
+        if (false === $success) {
+            throw CurrencyChangeWasBlocked::create($withdraw->amount());
+        }
     }
 }

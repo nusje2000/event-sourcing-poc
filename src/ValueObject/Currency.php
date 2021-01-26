@@ -58,6 +58,16 @@ final class Currency extends AbstractInt
         return self::createFromCents((int) ($this->inCents() * $amount));
     }
 
+    public function isGreaterThan(self $curreny): bool
+    {
+        return $this->inCents() > $curreny->inCents();
+    }
+
+    public function isLessThan(self $curreny): bool
+    {
+        return $this->inCents() < $curreny->inCents();
+    }
+
     public static function getConstraints(): array
     {
         return [];

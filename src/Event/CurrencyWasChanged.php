@@ -7,7 +7,7 @@ namespace App\Event;
 use App\ValueObject\Currency;
 use EventSauce\EventSourcing\Serialization\SerializablePayload;
 
-final class CurrencyWasWithdawn implements SerializablePayload
+final class CurrencyWasChanged implements SerializablePayload
 {
     /**
      * @var Currency

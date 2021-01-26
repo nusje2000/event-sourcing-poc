@@ -6,6 +6,8 @@ namespace App\Entity;
 
 use App\Event\AccountNumberWasAssigned;
 use App\Event\AccountWasCreated;
+use App\Event\CurrencyChangeWasBlocked;
+use App\Event\CurrencyWasChanged;
 use App\Event\CurrencyWasDeposited;
 use App\Event\CurrencyWasWithdawn;
 use App\ValueObject\AccountNumber;
@@ -31,6 +33,11 @@ final class BankAccount implements AggregateRoot
      */
     private $currency;
 
+    /**
+     * @var int
+     */
+    private $blockAttempts = 0;
+
     private function __construct(BankAccountId $aggregateRootId)
     {
         $this->aggregateRootId = $aggregateRootId;
@@ -47,7 +54,7 @@ final class BankAccount implements AggregateRoot
 
     public function id(): BankAccountId
     {
-        return $this->aggregateRootId;
+        return $this->aggregateRootId();
     }
 
     public function accountNumber(): ?AccountNumber
@@ -65,14 +72,24 @@ final class BankAccount implements AggregateRoot
         $this->recordThat(new AccountNumberWasAssigned($number));
     }
 
-    public function withdraw(Currency $currency): void
+    public function withdraw(Currency $currency): bool
     {
-        $this->recordThat(new CurrencyWasWithdawn($currency));
+        if ($this->currency->subtract($currency)->isLessThan($this->maximumDebt())) {
+            $this->recordThat(new CurrencyChangeWasBlocked($currency->multiply(-1)));
+
+            return false;
+        }
+
+        $this->recordThat(new CurrencyWasChanged($currency->multiply(-1)));
+
+        return true;
     }
 
-    public function deposit(Currency $currency): void
+    public function deposit(Currency $currency): bool
     {
-        $this->recordThat(new CurrencyWasDeposited($currency));
+        $this->recordThat(new CurrencyWasChanged($currency));
+
+        return true;
     }
 
     public function applyAccountWasCreated(AccountWasCreated $account): void
@@ -85,13 +102,18 @@ final class BankAccount implements AggregateRoot
         $this->accountNumber = $assignment->accountNumber();
     }
 
-    public function applyCurrencyWasDeposited(CurrencyWasDeposited $deposit): void
+    public function applyCurrencyWasChanged(CurrencyWasChanged $change): void
     {
-        $this->currency = $this->currency->add($deposit->amount());
+        $this->currency = $this->currency->add($change->amount());
     }
 
-    public function applyCurrencyWasWithdawn(CurrencyWasWithdawn $withdraw): void
+    public function applyCurrencyChangeWasBlocked(): void
     {
-        $this->currency = $this->currency->subtract($withdraw->amount());
+        ++$this->blockAttempts;
+    }
+
+    private function maximumDebt(): Currency
+    {
+        return Currency::createFromEuros(-100.0);
     }
 }

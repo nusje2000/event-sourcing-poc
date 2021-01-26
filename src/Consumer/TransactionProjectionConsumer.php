@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace App\Consumer;
 
-use App\ValueObject\BankAccountId;
 use App\Entity\Transaction;
+use App\Event\CurrencyChangeWasBlocked;
+use App\Event\CurrencyWasChanged;
 use App\Event\CurrencyWasDeposited;
 use App\Event\CurrencyWasWithdawn;
 use App\Repository\TransactionRepository;
+use App\ValueObject\BankAccountId;
 use EventSauce\EventSourcing\Consumer;
 use EventSauce\EventSourcing\Message;
 use Ramsey\Uuid\Uuid;
@@ -30,23 +32,25 @@ final class TransactionProjectionConsumer implements Consumer
     {
         $event = $message->event();
 
-        if ($event instanceof CurrencyWasDeposited) {
+        if ($event instanceof CurrencyWasChanged) {
             $this->transactionRepository->save(
                 new Transaction(
                     Uuid::uuid4(),
                     $this->getBankAccountIdFromMessage($message),
                     $event->amount(),
+                    true,
                     $message->timeOfRecording()->dateTime()
                 )
             );
         }
 
-        if ($event instanceof CurrencyWasWithdawn) {
+        if ($event instanceof CurrencyChangeWasBlocked) {
             $this->transactionRepository->save(
                 new Transaction(
                     Uuid::uuid4(),
                     $this->getBankAccountIdFromMessage($message),
-                    $event->amount()->multiply(-1),
+                    $event->amount(),
+                    false,
                     $message->timeOfRecording()->dateTime()
                 )
             );

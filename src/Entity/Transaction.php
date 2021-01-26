@@ -41,17 +41,25 @@ final class Transaction implements JsonSerializable
     private $amount;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $success;
+
+    /**
      * @var DateTimeInterface
      *
      * @ORM\Column(type="datetime_immutable")
      */
     private $timestamp;
 
-    public function __construct(UuidInterface $id, BankAccountId $accountId, Currency $amount, DateTimeInterface $timestamp)
+    public function __construct(UuidInterface $id, BankAccountId $accountId, Currency $amount, bool $success, DateTimeInterface $timestamp)
     {
         $this->id = $id->toString();
         $this->accountId = $accountId->toString();
         $this->amount = $amount->inCents();
+        $this->success = $success;
         $this->timestamp = $timestamp;
     }
 
@@ -68,6 +76,11 @@ final class Transaction implements JsonSerializable
     public function amount(): Currency
     {
         return Currency::createFromCents($this->amount);
+    }
+
+    public function successfull(): bool
+    {
+        return $this->success;
     }
 
     public function timestamp(): DateTimeInterface
