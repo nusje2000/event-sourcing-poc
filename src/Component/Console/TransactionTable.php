@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Console\Render;
+namespace App\Component\Console;
 
 use App\Entity\Transaction;
 use App\ValueObject\Currency;

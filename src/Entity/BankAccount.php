@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Event\BankAccount\AccountNumberWasAssigned;
-use App\Event\BankAccount\AccountWasCreated;
-use App\Event\BankAccount\CurrencyWasDeposited;
-use App\Event\BankAccount\CurrencyWasWithdawn;
+use App\Event\AccountNumberWasAssigned;
+use App\Event\AccountWasCreated;
+use App\Event\CurrencyWasDeposited;
+use App\Event\CurrencyWasWithdawn;
 use App\ValueObject\AccountNumber;
+use App\ValueObject\BankAccountId;
 use App\ValueObject\Currency;
 use EventSauce\EventSourcing\AggregateRoot;
 use EventSauce\EventSourcing\AggregateRootBehaviour;

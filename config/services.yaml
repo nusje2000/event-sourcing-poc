@@ -21,12 +21,12 @@ services:
     app.bank_account.dispatcher:
         class: EventSauce\EventSourcing\SynchronousMessageDispatcher
         arguments:
-            - '@App\Consumer\BankAccount\TransactionProjectionConsumer'
-            - '@App\Consumer\BankAccount\AccountNumberAssignmentConsumer'
-            - '@App\Consumer\BankAccount\AccountInformationProjectionConsumer'
+            - '@App\Consumer\TransactionProjectionConsumer'
+            - '@App\Consumer\AccountNumberAssignmentConsumer'
+            - '@App\Consumer\AccountInformationProjectionConsumer'
 
     app.bank_account.filesystem_repository:
-        class: App\Repository\FileSystemRepository
+        class: App\Component\EventSource\FileSystemRepository
         arguments:
             - '@app.message_serializer'
             - 'bank_account'

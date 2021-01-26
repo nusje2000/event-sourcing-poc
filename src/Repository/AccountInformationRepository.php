@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\AccountInformation;
-use App\Entity\BankAccountId;
+use App\ValueObject\BankAccountId;
 
 interface AccountInformationRepository
 {

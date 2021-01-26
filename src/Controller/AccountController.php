@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Command\BankAccount\Create;
-use App\Command\BankAccount\Deposit;
-use App\Command\BankAccount\Withdraw;
-use App\Entity\BankAccountId;
+use App\Command\Create;
+use App\Command\Deposit;
+use App\Command\Withdraw;
+use App\ValueObject\BankAccountId;
 use App\Repository\AccountInformationRepository;
 use App\Repository\TransactionRepository;
 use App\ValueObject\Currency;

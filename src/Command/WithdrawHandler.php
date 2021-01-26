@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Command\BankAccount;
+namespace App\Command;
 
 use App\Entity\BankAccount;
 use EventSauce\EventSourcing\AggregateRootRepository;
 
-final class CreateHandler
+final class WithdrawHandler
 {
     /**
      * @var AggregateRootRepository<BankAccount>
@@ -22,9 +22,11 @@ final class CreateHandler
         $this->repository = $repository;
     }
 
-    public function handle(Create $create): void
+    public function handle(Withdraw $withdraw): void
     {
-        $account = BankAccount::initiate($create->id());
+        /** @var BankAccount $account */
+        $account = $this->repository->retrieve($withdraw->id());
+        $account->withdraw($withdraw->amount());
         $this->repository->persist($account);
     }
 }

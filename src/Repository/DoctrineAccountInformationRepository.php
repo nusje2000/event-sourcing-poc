@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\AccountInformation;
-use App\Entity\BankAccountId;
-use App\Exception\BankAccount\AccountInformationNotFound;
+use App\ValueObject\BankAccountId;
+use App\Exception\AccountInformationNotFound;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Persistence\ObjectRepository;
 

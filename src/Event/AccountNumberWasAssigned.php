@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Event\BankAccount;
+namespace App\Event;
 
 use App\ValueObject\AccountNumber;
 use EventSauce\EventSourcing\Serialization\SerializablePayload;

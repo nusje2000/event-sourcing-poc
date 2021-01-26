@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Exception\BankAccount;
+namespace App\Exception;
 
-use App\Entity\BankAccountId;
+use App\ValueObject\BankAccountId;
 use UnexpectedValueException;
 
 final class AccountInformationNotFound extends UnexpectedValueException

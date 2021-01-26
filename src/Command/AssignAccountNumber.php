@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Command\BankAccount;
+namespace App\Command;
 
-use App\Entity\BankAccountId;
+use App\ValueObject\BankAccountId;
 
 final class AssignAccountNumber
 {

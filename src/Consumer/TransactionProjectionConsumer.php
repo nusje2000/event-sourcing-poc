@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Consumer\BankAccount;
+namespace App\Consumer;
 
-use App\Entity\BankAccountId;
+use App\ValueObject\BankAccountId;
 use App\Entity\Transaction;
-use App\Event\BankAccount\CurrencyWasDeposited;
-use App\Event\BankAccount\CurrencyWasWithdawn;
+use App\Event\CurrencyWasDeposited;
+use App\Event\CurrencyWasWithdawn;
 use App\Repository\TransactionRepository;
 use EventSauce\EventSourcing\Consumer;
 use EventSauce\EventSourcing\Message;

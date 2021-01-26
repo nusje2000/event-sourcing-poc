@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Event\BankAccount;
+namespace App\Event;
 
-use App\Entity\BankAccountId;
+use App\ValueObject\BankAccountId;
 use EventSauce\EventSourcing\Serialization\SerializablePayload;
 
 final class AccountWasCreated implements SerializablePayload

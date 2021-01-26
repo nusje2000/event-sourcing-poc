@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Exception\BankAccount\MissingAccountNumber;
+use App\Exception\MissingAccountNumber;
 use App\ValueObject\AccountNumber;
+use App\ValueObject\BankAccountId;
 use App\ValueObject\Currency;
 use Doctrine\ORM\Mapping as ORM;
 

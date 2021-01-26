@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\Consumer\BankAccount;
+namespace App\Consumer;
 
 use App\Entity\AccountInformation;
 use App\Entity\BankAccount;
-use App\Entity\BankAccountId;
-use App\Event\BankAccount\AccountNumberWasAssigned;
-use App\Event\BankAccount\CurrencyWasDeposited;
-use App\Event\BankAccount\CurrencyWasWithdawn;
+use App\ValueObject\BankAccountId;
+use App\Event\AccountNumberWasAssigned;
+use App\Event\CurrencyWasDeposited;
+use App\Event\CurrencyWasWithdawn;
 use App\Repository\AccountInformationRepository;
 use App\ValueObject\Currency;
 use EventSauce\EventSourcing\AggregateRootRepository;

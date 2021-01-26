@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Console;
 
-use App\Command\BankAccount\Deposit;
-use App\Command\BankAccount\Withdraw;
-use App\Console\Render\AccountInformationTable;
-use App\Console\Render\TransactionTable;
+use App\Command\Deposit;
+use App\Command\Withdraw;
+use App\Component\Console\AccountInformationTable;
+use App\Component\Console\TransactionTable;
 use App\Entity\BankAccount;
-use App\Entity\BankAccountId;
+use App\ValueObject\BankAccountId;
 use App\Repository\TransactionRepository;
 use App\ValueObject\Currency;
 use EventSauce\EventSourcing\AggregateRootRepository;

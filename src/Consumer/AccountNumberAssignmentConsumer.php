@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Consumer\BankAccount;
+namespace App\Consumer;
 
-use App\Command\BankAccount\AssignAccountNumber;
-use App\Entity\BankAccountId;
-use App\Event\BankAccount\AccountWasCreated;
+use App\Command\AssignAccountNumber;
+use App\ValueObject\BankAccountId;
+use App\Event\AccountWasCreated;
 use EventSauce\EventSourcing\Consumer;
 use EventSauce\EventSourcing\Message;
 use League\Tactician\CommandBus;

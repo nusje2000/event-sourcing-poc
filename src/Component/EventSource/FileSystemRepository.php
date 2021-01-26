@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Repository;
+namespace App\Component\EventSource;
 
 use App\Exception\AggregateRootNotFound;
 use EventSauce\EventSourcing\AggregateRootId;

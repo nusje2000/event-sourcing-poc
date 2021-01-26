@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
-use App\Entity\BankAccountId;
+use App\ValueObject\BankAccountId;
 use App\Entity\Transaction;
 
 interface TransactionRepository

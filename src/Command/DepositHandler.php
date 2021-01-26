@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Command\BankAccount;
+namespace App\Command;
 
 use App\Entity\BankAccount;
 use EventSauce\EventSourcing\AggregateRootRepository;
