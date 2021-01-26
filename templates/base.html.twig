@@ -26,6 +26,8 @@
             {% endif %}
         {% endblock %}
         {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
+        {% block javascripts %}
+            <script src="https://cdn.socket.io/socket.io-3.0.1.min.js"></script>
+        {% endblock %}
     </body>
 </html>
