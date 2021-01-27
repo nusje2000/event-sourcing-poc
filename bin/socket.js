@@ -80,6 +80,10 @@ function handleEventDebug(req) {
 function addDebugEvent(event) {
     debugEvents.push(event);
     io.of(`/event-debug`).emit('incomming-event', event);
+
+    while (debugEvents.length > 10) {
+        debugEvents.shift();
+    }
 }
 
 function updateTransaction(accountId, transactions) {
