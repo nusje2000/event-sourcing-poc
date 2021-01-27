@@ -1,0 +1,51 @@
+.js-event-debugger {
+    position: fixed;
+    top: 0;
+    height: 100vh;
+    width: 90vw;
+    overflow-y: scroll;
+    background-color: #999999;
+
+    display: none;
+    left: 10vw;
+    box-shadow: -5vw 0 20vw #000000;
+
+    z-index: 100000;
+}
+
+.js-event.new {
+    animation: new-event .2s;
+    animation-iteration-count: 3;
+}
+
+@keyframes new-event {
+    from {
+        background-color: inherit;
+    }
+    50% {
+        background-color: #7dff6b;
+    }
+    to {
+        background-color: inherit;
+    }
+}
+
+.js-event-debugger__opened {
+}
+
+.js-event-debugger--close {
+    position: fixed;
+    top: 0;
+    right: 0;
+    margin: 20px;
+    z-index: 100001;
+    display: none;
+}
+
+.js-event-debugger--open {
+    position: fixed;
+    top: 0;
+    right: 0;
+    margin: 20px;
+    z-index: 100001;
+}

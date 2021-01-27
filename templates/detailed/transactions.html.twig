@@ -1,0 +1,22 @@
+{% extends 'detailed/_page.html.twig' %}
+
+{% import 'shared/buttons.html.twig' as button %}
+
+{% block content %}
+    <h2 class="text-xl mb-3">
+        {{ button.plain_link(class_source_url(class), 'Transactions') }}
+        ({{ button.plain_link(class_source_url(source), 'repository')|spaceless }})
+    </h2>
+    {% for transaction in transactions %}
+        <div class="flex mb-1 py-1 bg-blue-200">
+            <div class="flex-1 mx-1">
+                {{ dump(transaction) }}
+            </div>
+            <div class="flex-1 font-mono mx-1">
+                ID: {{ transaction.id }}<br>
+                TIME: {{ transaction.timestamp|date('Y-m-d H:i:s') }}<br>
+                AMOUNT: {{ transaction.amount.inEuros }}
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}

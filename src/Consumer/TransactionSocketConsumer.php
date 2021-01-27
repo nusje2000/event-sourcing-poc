@@ -6,6 +6,7 @@ namespace App\Consumer;
 
 use App\Event\CurrencyChangeWasBlocked;
 use App\Event\CurrencyWasChanged;
+use App\Repository\TransactionRepository;
 use App\ValueObject\BankAccountId;
 use EventSauce\EventSourcing\Consumer;
 use EventSauce\EventSourcing\Message;
@@ -13,6 +14,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use UnexpectedValueException;
 
+use function Safe\json_encode;
 use function Safe\sprintf;
 
 final class TransactionSocketConsumer implements Consumer
@@ -34,11 +36,17 @@ final class TransactionSocketConsumer implements Consumer
      */
     private $host;
 
-    public function __construct(HttpClientInterface $client, LoggerInterface $logger, string $host)
+    /**
+     * @var TransactionRepository
+     */
+    private $repository;
+
+    public function __construct(HttpClientInterface $client, LoggerInterface $logger, TransactionRepository $repository, string $host)
     {
         $this->client = $client;
         $this->logger = $logger;
         $this->host = $host;
+        $this->repository = $repository;
     }
 
     public function handle(Message $message): void
@@ -57,7 +65,9 @@ final class TransactionSocketConsumer implements Consumer
     private function triggerUpdate(BankAccountId $id): void
     {
         $path = sprintf(self::UPDATE_PATH, $id->toString());
-        $response = $this->client->request('GET', rtrim($this->host, '/') . $path);
+        $response = $this->client->request('POST', rtrim($this->host, '/') . $path, [
+            'body' => json_encode($this->repository->byAccount($id)),
+        ]);
 
         if (200 !== $response->getStatusCode()) {
             $this->logger->error('Updating socket failed.');

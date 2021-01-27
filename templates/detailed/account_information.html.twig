@@ -1,0 +1,20 @@
+{% extends 'detailed/_page.html.twig' %}
+
+{% import 'shared/buttons.html.twig' as button %}
+
+{% block content %}
+    <h2 class="text-xl mb-3">
+        {{ button.plain_link(class_source_url(class), 'Account Information') }}
+        ({{ button.plain_link(class_source_url(source), 'repository')|spaceless }})
+    </h2>
+    <div class="flex mb-1 py-1 bg-blue-200">
+        <div class="flex-1 mx-1">
+            {{ dump(information) }}
+        </div>
+        <div class="flex-1 font-mono mx-1">
+            ID: {{ information.accountId }}<br>
+            ACCOUNT NUMBER: {{ information.accountNumber }}<br>
+            BALANCE: {{ information.balance }}<br>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% import 'shared/buttons.html.twig' as button %}
+
+{% block body %}
+    <div class="mx-5 mt-5">
+        <div class="rounded-md">
+            {{ button.primary_link_small(previous_page|default(path('app_account_detailed', {id: id.toString})), 'Back') }}
+        </div>
+    </div>
+
+    <div class="flex">
+        <div class="m-5 w-2/3">
+            {% block content %}{% endblock %}
+        </div>
+        <div class="m-5">
+            <div class="mb-3">
+                <h2 class="text-xl mb-3">Event source</h2>
+                <div class="mb-2">
+                    {{ button.plain_link(path('app_account_detailed_messages', {id: id.toString}), 'Messages') }}
+                </div>
+                <div class="mb-2">
+                    {{ button.plain_link(class_source_url(message_dispatcher_class), 'Message Dispatcher') }}
+                </div>
+                <div class="mb-2">
+                    {{ button.plain_link(class_source_url(aggregate_root_repository_class), 'Aggregate Root Repository') }}
+                </div>
+            </div>
+            <div class="mb-3">
+                <h2 class="text-xl mb-3">Projections</h2>
+                <div class="mb-2">
+                    {{ button.plain_link(path('app_account_detailed_transactions', {id: id.toString}), 'Transactions') }}
+                </div>
+                <div class="mb-2">
+                    {{ button.plain_link(path('app_account_detailed_account_information', {id: id.toString}), 'Account Information') }}
+                </div>
+            </div>
+            <div class="mb-3">
+                <h2 class="text-xl mb-3">Consumers</h2>
+                {% for consumer in consumers %}
+                    <div class="mb-2">
+                        {{ button.plain_link(class_source_url(consumer), consumer|short_class_name) }}
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="mb-3">
+                <h2 class="text-xl mb-3">Events</h2>
+                {% for file, event in events %}
+                    <div class="mb-2">
+                        {{ button.plain_link(path('_profiler_open_file', {file: file, line: 1}), event) }}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

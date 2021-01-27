@@ -1,0 +1,20 @@
+{% extends 'detailed/_page.html.twig' %}
+
+{% import 'shared/buttons.html.twig' as button %}
+
+{% block content %}
+    <h2 class="text-xl mb-3">Messages ({{ button.plain_link(class_source_url(source), 'repository')|spaceless }})</h2>
+    {% for message in messages %}
+        <div class="flex mb-1 py-1 bg-blue-200">
+            <div class="flex-1 mx-1">
+                {{ dump(message) }}
+            </div>
+            <div class="flex-1 font-mono mx-1">
+                {% set class_name = inflector.typeToClassName(message.header('__event_type')) %}
+                CLASS: {{ button.plain_link(class_source_url(class_name), class_name) }}<br>
+                VERSION: {{ message.header('__aggregate_root_version') }}<br>
+                TIME OF RECORDING: {{ message.header('__time_of_recording')|date('Y-m-d H:i:s') }}
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}

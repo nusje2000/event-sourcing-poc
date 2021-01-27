@@ -1,0 +1,16 @@
+{% extends 'detailed/_page.html.twig' %}
+
+{% import 'shared/buttons.html.twig' as button %}
+
+{% set previous_page = path('app_account_view', {id: id.toString}) %}
+
+{% block content %}
+    <h2 class="text-xl mb-3">
+        Aggregate Root: {{ button.plain_link(class_source_url(aggregate), aggregate|class_name) }}
+    </h2>
+    <div class="mb-2 font-mono">
+        Aggregate Root ID: {{ aggregate.id.toString }}<br>
+        Aggregate Root Version: {{ aggregate.aggregateRootVersion }}
+    </div>
+    {{ dump(aggregate) }}
+{% endblock %}

@@ -2,12 +2,13 @@
 {% import 'shared/buttons.html.twig' as button %}
 
 {% block body %}
-    <div class="ml-2 my-2">
+    <div class="m-2">
         <div class="rounded-md">
             <a href="{{ path('app_home') }}"
-               class="items-center px-2 py-1 border border-transparent text-base font-medium rounded-md text-white bg-gray-400 hover:bg-gray-500">
+               class="items-center px-2 py-1 mr-5 border border-transparent text-base font-medium rounded-md text-white bg-gray-400 hover:bg-gray-500">
                 Home
             </a>
+            {{ button.primary_link_small(path('app_account_detailed', {id: id.toString}), 'Show detailed aggregate view') }}
         </div>
 
         <h2 class="text-xl mt-4">Account information</h2>

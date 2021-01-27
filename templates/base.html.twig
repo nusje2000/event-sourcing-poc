@@ -9,6 +9,7 @@
         {% endblock %}
         {% block stylesheets %}
             <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+            <link href="{{ asset('common.css') }}" rel="stylesheet">
         {% endblock %}
     </head>
     <body>
@@ -26,10 +27,23 @@
             {% endif %}
         {% endblock %}
         {% block body %}{% endblock %}
+
+        {% block debugger %}
+            {% import 'shared/buttons.html.twig' as button %}
+            <div class="js-event-debugger" data-socket-url="{{ transaction_socket_host }}"></div>
+            <div class="js-event-debugger--close">
+                {{ button.primary_link_small('#', 'Close live log') }}
+            </div>
+            <div class="js-event-debugger--open">
+                {{ button.primary_link_small('#', 'Open live log') }}
+            </div>
+        {% endblock %}
+
         {% block javascripts %}
             <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
             <script src="https://cdn.socket.io/socket.io-3.0.1.min.js"></script>
             <script src="{{ asset('javascript/index.js') }}"></script>
+            <script src="{{ asset('javascript/debugger.js') }}"></script>
         {% endblock %}
     </body>
 </html>

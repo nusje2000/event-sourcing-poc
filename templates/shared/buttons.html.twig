@@ -4,3 +4,10 @@
         {{ text }}
     </a>
 {% endmacro %}
+
+{% macro plain_link(path, text) %}
+    <a href="{{ path }}"
+       class="items-center justify-center text-indigo-600 hover:text-indigo-900 underline">
+        {{ text }}
+    </a>
+{% endmacro %}
