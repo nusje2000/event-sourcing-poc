@@ -30,6 +30,6 @@
     "homepage": "https://github.com/nusje2000/event-sourcing-poc#readme",
     "description": "",
     "devDependencies": {
-        "nodemon": "^2.0.7"
+        "nodemon": "^2.0.15"
     }
 }

@@ -9,26 +9,20 @@ use App\ValueObject\BankAccountId;
 use App\Event\AccountWasCreated;
 use EventSauce\EventSourcing\Consumer;
 use EventSauce\EventSourcing\Message;
-use League\Tactician\CommandBus;
+use Symfony\Component\Messenger\MessageBusInterface;
 use UnexpectedValueException;
 
 final class AccountNumberAssignmentConsumer implements Consumer
 {
-    /**
-     * @var CommandBus
-     */
-    private $commandBus;
-
-    public function __construct(CommandBus $commandBus)
+    public function __construct(private MessageBusInterface $messageBus)
     {
-        $this->commandBus = $commandBus;
     }
 
     public function handle(Message $message): void
     {
         $event = $message->event();
         if ($event instanceof AccountWasCreated) {
-            $this->commandBus->handle(new AssignAccountNumber($this->getBankAccountIdFromMessage($message)));
+            $this->messageBus->dispatch(new AssignAccountNumber($this->getBankAccountIdFromMessage($message)));
         }
     }
 

@@ -6,17 +6,16 @@ services:
     App\:
         resource: '../src/'
         exclude:
+            - '../src/Controller/'
+            - '../src/Command/'
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
             - '../src/Tests/'
 
     App\Controller\:
-        resource: '../src/Controller/'
+        resource: '../src/Controller/{DetailedViewController.php,TransactionController.php}'
         tags: [ 'controller.service_arguments' ]
-
-    app.event_source.class_name_inflector:
-        class: EventSauce\EventSourcing\DotSeparatedSnakeCaseInflector
 
     App\Controller\DetailedViewController:
         arguments:
@@ -26,35 +25,6 @@ services:
             - '@App\Repository\TransactionRepository'
             - '@app.event_source.class_name_inflector'
             - '@app.bank_account.dispatcher'
-
-    app.message_serializer:
-        class: EventSauce\EventSourcing\Serialization\ConstructingMessageSerializer
-
-    app.bank_account.dispatcher:
-        class: EventSauce\EventSourcing\SynchronousMessageDispatcher
-        arguments:
-            - '@App\Consumer\TransactionProjectionConsumer'
-            - '@App\Consumer\AccountNumberAssignmentConsumer'
-            - '@App\Consumer\AccountInformationProjectionConsumer'
-            - '@App\Consumer\TransactionSocketConsumer'
-            - '@App\Component\EventSource\DebugSocketConsumer'
-
-    app.bank_account.filesystem_repository:
-        class: App\Component\EventSource\FileSystemRepository
-        arguments:
-            - '@app.message_serializer'
-            - 'bank_account'
-            - '%kernel.project_dir%/var/storage'
-
-    app.bank_account.repository:
-        class: EventSauce\EventSourcing\ConstructingAggregateRootRepository
-        arguments:
-            - App\Entity\BankAccount
-            - '@app.bank_account.filesystem_repository'
-            - '@app.bank_account.dispatcher'
-
-    app.bank_account.account_number_distributor:
-        class: App\Service\RandomAccountNumberDistributor
 
     App\Repository\TransactionRepository:
         class: App\Repository\DoctrineTransactionRepository

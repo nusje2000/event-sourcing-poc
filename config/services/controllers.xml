@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<container xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xmlns="http://symfony.com/schema/dic/services"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <defaults>
+            <tag name="controller.service_arguments"/>
+        </defaults>
+
+        <service id="controller.index" class="App\Controller\IndexController">
+            <argument type="service" id="twig"/>
+        </service>
+
+        <service id="controller.account.view" class="App\Controller\Account\ViewController">
+            <argument type="service" id="twig"/>
+            <argument type="service" id="App\Repository\AccountInformationRepository"/>
+            <argument type="service" id="App\Repository\TransactionRepository"/>
+        </service>
+
+        <service id="controller.account.create" class="App\Controller\Account\CreateController">
+            <argument type="service" id="messenger.default_bus"/>
+            <argument type="service" id="router"/>
+        </service>
+
+        <service id="controller.account.deposit" class="App\Controller\Account\DepositController">
+            <argument type="service" id="messenger.default_bus"/>
+            <argument type="service" id="router"/>
+        </service>
+
+        <service id="controller.account.withdraw" class="App\Controller\Account\WithdrawController">
+            <argument type="service" id="messenger.default_bus"/>
+            <argument type="service" id="router"/>
+        </service>
+    </services>
+</container>

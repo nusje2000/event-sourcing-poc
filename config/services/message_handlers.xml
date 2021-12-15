@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<container xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xmlns="http://symfony.com/schema/dic/services"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <defaults>
+            <tag name="messenger.message_handler"/>
+        </defaults>
+
+        <service id="app.message_handler.assign_account_number" class="App\Command\AssignAccountNumberHandler">
+            <argument type="service" id="app.bank_account.repository"/>
+            <argument type="service" id="app.bank_account.account_number_distributor"/>
+        </service>
+
+        <service id="app.message_handler.create" class="App\Command\CreateHandler">
+            <argument type="service" id="app.bank_account.repository"/>
+        </service>
+
+        <service id="app.message_handler.deposit" class="App\Command\DepositHandler">
+            <argument type="service" id="app.bank_account.repository"/>
+        </service>
+
+        <service id="app.message_handler.withdraw" class="App\Command\WithdrawHandler">
+            <argument type="service" id="app.bank_account.repository"/>
+        </service>
+    </services>
+</container>

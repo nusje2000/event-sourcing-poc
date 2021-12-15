@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<routes xmlns="http://symfony.com/schema/routing"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://symfony.com/schema/routing
+        https://symfony.com/schema/routing/routing-1.0.xsd">
+    <route id="app_home" path="/" methods="GET">
+        <default key="_controller">controller.index</default>
+    </route>
+
+    <route id="app_account_create" path="/account/create" methods="GET">
+        <default key="_controller">controller.account.create</default>
+    </route>
+
+    <route id="app_account_view" path="/account/view/{id}" methods="GET">
+        <default key="_controller">controller.account.view</default>
+    </route>
+
+    <route id="app_account_deposit" path="/account/deposit/{id}/{amount}" methods="GET">
+        <default key="_controller">controller.account.deposit</default>
+    </route>
+
+    <route id="app_account_withdraw" path="/account/withdraw/{id}/{amount}" methods="GET">
+        <default key="_controller">controller.account.withdraw</default>
+    </route>
+</routes>

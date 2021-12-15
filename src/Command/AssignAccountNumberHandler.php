@@ -12,25 +12,14 @@ use EventSauce\EventSourcing\AggregateRootRepository;
 final class AssignAccountNumberHandler
 {
     /**
-     * @var AggregateRootRepository<BankAccount>
-     */
-    private $repository;
-
-    /**
-     * @var AccountNumberDistributor
-     */
-    private $distributor;
-
-    /**
      * @param AggregateRootRepository<BankAccount> $repository
      */
-    public function __construct(AggregateRootRepository $repository, AccountNumberDistributor $distributor)
-    {
-        $this->repository = $repository;
-        $this->distributor = $distributor;
-    }
+    public function __construct(
+        private AggregateRootRepository $repository,
+        private AccountNumberDistributor $distributor
+    ) {}
 
-    public function handle(AssignAccountNumber $assignment): void
+    public function __invoke(AssignAccountNumber $assignment): void
     {
         /** @var BankAccount $account */
         $account = $this->repository->retrieve($assignment->id());

@@ -10,19 +10,11 @@ use EventSauce\EventSourcing\AggregateRootRepository;
 final class DepositHandler
 {
     /**
-     * @var AggregateRootRepository<BankAccount>
-     */
-    private $repository;
-
-    /**
      * @param AggregateRootRepository<BankAccount> $repository
      */
-    public function __construct(AggregateRootRepository $repository)
-    {
-        $this->repository = $repository;
-    }
+    public function __construct(private AggregateRootRepository $repository) {}
 
-    public function handle(Deposit $deposit): void
+    public function __invoke(Deposit $deposit): void
     {
         /** @var BankAccount $account */
         $account = $this->repository->retrieve($deposit->id());

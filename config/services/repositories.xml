@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<container xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xmlns="http://symfony.com/schema/dic/services"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <service id="app.bank_account.filesystem_repository" class="App\Component\EventSource\FileSystemRepository">
+            <argument type="service" id="app.message_serializer"/>
+            <argument>bank_account</argument>
+            <argument>%kernel.project_dir%/var/storage</argument>
+        </service>
+
+        <service id="app.bank_account.repository" class="EventSauce\EventSourcing\ConstructingAggregateRootRepository">
+            <argument>App\Entity\BankAccount</argument>
+            <argument type="service" id="app.bank_account.filesystem_repository"/>
+            <argument type="service" id="app.bank_account.dispatcher"/>
+        </service>
+    </services>
+</container>

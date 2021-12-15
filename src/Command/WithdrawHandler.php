@@ -11,19 +11,11 @@ use EventSauce\EventSourcing\AggregateRootRepository;
 final class WithdrawHandler
 {
     /**
-     * @var AggregateRootRepository<BankAccount>
-     */
-    private $repository;
-
-    /**
      * @param AggregateRootRepository<BankAccount> $repository
      */
-    public function __construct(AggregateRootRepository $repository)
-    {
-        $this->repository = $repository;
-    }
+    public function __construct(private AggregateRootRepository $repository) {}
 
-    public function handle(Withdraw $withdraw): void
+    public function __invoke(Withdraw $withdraw): void
     {
         /** @var BankAccount $account */
         $account = $this->repository->retrieve($withdraw->id());

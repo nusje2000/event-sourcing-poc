@@ -4,17 +4,15 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Twig\Environment;
 
-final class IndexController extends AbstractController
+final class IndexController
 {
-    /**
-     * @Route("/", name="app_home")
-     */
-    public function index(): Response
+    public function __construct(private Environment $twig) {}
+
+    public function __invoke(): Response
     {
-        return $this->render('index.html.twig');
+        return new Response($this->twig->render('index.html.twig'));
     }
 }

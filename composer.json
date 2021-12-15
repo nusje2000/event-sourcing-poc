@@ -4,7 +4,7 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "php": ">=7.3",
+        "php": ">=8.0",
         "ext-ctype": "*",
         "ext-iconv": "*",
         "aeviiq/value-object": "^0.2.1",
