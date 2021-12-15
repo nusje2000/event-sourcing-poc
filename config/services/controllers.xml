@@ -14,8 +14,8 @@
 
         <service id="controller.account.view" class="App\Controller\Account\ViewController">
             <argument type="service" id="twig"/>
-            <argument type="service" id="App\Repository\AccountInformationRepository"/>
-            <argument type="service" id="App\Repository\TransactionRepository"/>
+            <argument type="service" id="app.repository.account_information"/>
+            <argument type="service" id="app.repository.transaction"/>
         </service>
 
         <service id="controller.account.create" class="App\Controller\Account\CreateController">

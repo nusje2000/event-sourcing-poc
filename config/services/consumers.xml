@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<container xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xmlns="http://symfony.com/schema/dic/services"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <service id="app.consumer.transaction_projection" class="App\Consumer\TransactionProjectionConsumer">
+            <argument type="service" id="app.repository.transaction"/>
+        </service>
+
+        <service id="app.consumer.account_number_assignment" class="App\Consumer\AccountNumberAssignmentConsumer">
+            <argument type="service" id="messenger.default_bus"/>
+        </service>
+
+        <service id="app.consumer.account_information_projection" class="App\Consumer\AccountInformationProjectionConsumer">
+            <argument type="service" id="app.repository.account_information"/>
+        </service>
+
+        <service id="app.consumer.transaction_socket" class="App\Consumer\TransactionSocketConsumer">
+            <argument type="service" id="http_client"/>
+            <argument type="service" id="logger"/>
+            <argument type="service" id="app.repository.transaction"/>
+            <argument>%env(resolve:APP_TRANSACTIONS_SOCKET)%</argument>
+        </service>
+
+        <service id="app.consumer.debug_socket" class="App\Component\EventSource\DebugSocketConsumer">
+            <argument type="service" id="http_client"/>
+            <argument type="service" id="logger"/>
+            <argument type="service" id="app.message_serializer"/>
+            <argument>%env(resolve:APP_TRANSACTIONS_SOCKET)%</argument>
+        </service>
+    </services>
+</container>

@@ -5,11 +5,11 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
         <service id="app.bank_account.dispatcher" class="EventSauce\EventSourcing\SynchronousMessageDispatcher">
-            <argument type="service" id="App\Consumer\TransactionProjectionConsumer"/>
-            <argument type="service" id="App\Consumer\AccountNumberAssignmentConsumer"/>
-            <argument type="service" id="App\Consumer\AccountInformationProjectionConsumer"/>
-            <argument type="service" id="App\Consumer\TransactionSocketConsumer"/>
-            <argument type="service" id="App\Component\EventSource\DebugSocketConsumer"/>
+            <argument type="service" id="app.consumer.transaction_projection"/>
+            <argument type="service" id="app.consumer.account_number_assignment"/>
+            <argument type="service" id="app.consumer.account_information_projection"/>
+            <argument type="service" id="app.consumer.transaction_socket"/>
+            <argument type="service" id="app.consumer.debug_socket"/>
         </service>
 
         <service id="app.message_serializer" class="EventSauce\EventSourcing\Serialization\ConstructingMessageSerializer"/>

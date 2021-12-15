@@ -15,5 +15,13 @@
             <argument type="service" id="app.bank_account.filesystem_repository"/>
             <argument type="service" id="app.bank_account.dispatcher"/>
         </service>
+
+        <service id="app.repository.transaction" class="App\Repository\DoctrineTransactionRepository">
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+        </service>
+
+        <service id="app.repository.account_information" class="App\Repository\DoctrineAccountInformationRepository">
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+        </service>
     </services>
 </container>

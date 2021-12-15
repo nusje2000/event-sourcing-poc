@@ -21,26 +21,12 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Messenger\MessageBusInterface;
 use UnexpectedValueException;
 
 final class ManageAccountCommand extends Command
 {
     protected static $defaultName = 'app:bank_account:manage';
-
-    /**
-     * @var AggregateRootRepository<BankAccount>
-     */
-    private $rootRepository;
-
-    /**
-     * @var TransactionRepository
-     */
-    private $transactionRepository;
-
-    /**
-     * @var CommandBus
-     */
-    private $commandBus;
 
     /**
      * @var SymfonyStyle|null
@@ -50,13 +36,12 @@ final class ManageAccountCommand extends Command
     /**
      * @param AggregateRootRepository<BankAccount> $rootRepository
      */
-    public function __construct(AggregateRootRepository $rootRepository, TransactionRepository $transactionRepository, CommandBus $commandBus)
-    {
+    public function __construct(
+        private AggregateRootRepository $rootRepository,
+        private TransactionRepository $transactionRepository,
+        private MessageBusInterface $messageBus
+    ) {
         parent::__construct();
-
-        $this->rootRepository = $rootRepository;
-        $this->transactionRepository = $transactionRepository;
-        $this->commandBus = $commandBus;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -98,7 +83,7 @@ final class ManageAccountCommand extends Command
             return false;
         }
 
-        $this->commandBus->handle($action);
+        $this->messageBus->dispatch($action);
 
         return true;
     }

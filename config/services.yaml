@@ -3,35 +3,19 @@ services:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
 
-    App\:
-        resource: '../src/'
-        exclude:
-            - '../src/Controller/'
-            - '../src/Command/'
-            - '../src/DependencyInjection/'
-            - '../src/Entity/'
-            - '../src/Kernel.php'
-            - '../src/Tests/'
-
     App\Controller\:
         resource: '../src/Controller/{DetailedViewController.php,TransactionController.php}'
         tags: [ 'controller.service_arguments' ]
+
+    App\Controller\TransactionController:
+        arguments:
+            - '@app.repository.transaction'
 
     App\Controller\DetailedViewController:
         arguments:
             - '@app.bank_account.repository'
             - '@app.bank_account.filesystem_repository'
-            - '@App\Repository\AccountInformationRepository'
-            - '@App\Repository\TransactionRepository'
+            - '@app.repository.account_information'
+            - '@app.repository.transaction'
             - '@app.event_source.class_name_inflector'
             - '@app.bank_account.dispatcher'
-
-    App\Repository\TransactionRepository:
-        class: App\Repository\DoctrineTransactionRepository
-        arguments:
-            - '@doctrine.orm.entity_manager'
-
-    App\Repository\AccountInformationRepository:
-        class: App\Repository\DoctrineAccountInformationRepository
-        arguments:
-            - '@doctrine.orm.entity_manager'

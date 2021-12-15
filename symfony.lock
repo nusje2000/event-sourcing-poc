@@ -17,6 +17,9 @@
     "composer/package-versions-deprecated": {
         "version": "1.11.99.1"
     },
+    "composer/pcre": {
+        "version": "1.0.0"
+    },
     "composer/semver": {
         "version": "3.2.4"
     },
@@ -49,6 +52,9 @@
     },
     "doctrine/dbal": {
         "version": "2.12.1"
+    },
+    "doctrine/deprecations": {
+        "version": "v0.5.3"
     },
     "doctrine/doctrine-bundle": {
         "version": "2.0",
@@ -104,6 +110,9 @@
     },
     "egulias/email-validator": {
         "version": "2.1.25"
+    },
+    "eventsauce/clock": {
+        "version": "1.0.0"
     },
     "eventsauce/eventsauce": {
         "version": "0.8.2"
@@ -455,6 +464,9 @@
     "symfony/polyfill-php80": {
         "version": "v1.22.0"
     },
+    "symfony/polyfill-php81": {
+        "version": "v1.23.0"
+    },
     "symfony/process": {
         "version": "v5.2.1"
     },
@@ -486,30 +498,6 @@
             "./config/packages/routing.yaml",
             "./config/routes.yaml"
         ]
-    },
-    "symfony/security-bundle": {
-        "version": "5.1",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "5.1",
-            "ref": "0a4bae19389d3b9cba1ca0102e3b2bccea724603"
-        },
-        "files": [
-            "./config/packages/security.yaml"
-        ]
-    },
-    "symfony/security-core": {
-        "version": "v5.2.1"
-    },
-    "symfony/security-csrf": {
-        "version": "v5.2.1"
-    },
-    "symfony/security-guard": {
-        "version": "v5.2.1"
-    },
-    "symfony/security-http": {
-        "version": "v5.2.1"
     },
     "symfony/serializer": {
         "version": "v5.2.1"

@@ -39,7 +39,7 @@ final class TransactionProjectionConsumer implements Consumer
                     $this->getBankAccountIdFromMessage($message),
                     $event->amount(),
                     true,
-                    $message->timeOfRecording()->dateTime()
+                    $message->timeOfRecording()
                 )
             );
         }
@@ -51,7 +51,7 @@ final class TransactionProjectionConsumer implements Consumer
                     $this->getBankAccountIdFromMessage($message),
                     $event->amount(),
                     false,
-                    $message->timeOfRecording()->dateTime()
+                    $message->timeOfRecording()
                 )
             );
         }

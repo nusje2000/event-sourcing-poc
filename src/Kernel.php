@@ -19,13 +19,14 @@ final class Kernel extends BaseKernel
         $container->import('../config/{packages}/' . $this->environment . '/*.yaml');
 
         $container->import('../config/services.yaml');
+        $container->import('../config/services/console.xml');
+        $container->import('../config/services/consumers.xml');
         $container->import('../config/services/controllers.xml');
         $container->import('../config/services/event_source.xml');
         $container->import('../config/services/message_handlers.xml');
         $container->import('../config/services/repositories.xml');
         $container->import('../config/services/services.xml');
-        $container->import('../config/services/console.yaml');
-        $container->import('../config/services/consumers.yaml');
+        $container->import('../config/services/twig.xml');
     }
 
     protected function configureRoutes(RoutingConfigurator $routes): void
