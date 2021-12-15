@@ -62,7 +62,7 @@ final class FileSystemRepository implements MessageRepository
 
             /** @var Message $message */
             foreach ($this->messageSerializer->unserializePayload($decoded) as $message) {
-                $version = $message->aggregateVersion();
+                $version = $version < $message->aggregateVersion() ? $message->aggregateVersion() : $version;
 
                 yield $message;
             }

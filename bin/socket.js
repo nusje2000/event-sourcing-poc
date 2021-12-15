@@ -93,7 +93,7 @@ function updateTransaction(accountId, transactions) {
 }
 
 function fetchTransaction(accountId) {
-    axios.get(`http://localhost:8000/api/transactions/${accountId}`).then((response) => {
+    axios.get(`http://nginx/api/transactions/${accountId}`).then((response) => {
         updateTransaction(accountId, response.data);
     }).catch(console.error);
 }

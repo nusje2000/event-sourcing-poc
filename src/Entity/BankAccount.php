@@ -8,8 +8,6 @@ use App\Event\AccountNumberWasAssigned;
 use App\Event\AccountWasCreated;
 use App\Event\CurrencyChangeWasBlocked;
 use App\Event\CurrencyWasChanged;
-use App\Event\CurrencyWasDeposited;
-use App\Event\CurrencyWasWithdawn;
 use App\ValueObject\AccountNumber;
 use App\ValueObject\BankAccountId;
 use App\ValueObject\Currency;
